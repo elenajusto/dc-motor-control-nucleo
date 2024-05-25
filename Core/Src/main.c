@@ -18,7 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "BMP180.h"
+#include "stdio.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -60,6 +61,14 @@ void motorSpinny();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+float Temperature = 0;
+float Pressure = 0;
+float Altitude = 0;
+
+char Temperature1[10];
+char Pressure1[10];
+char Altitude1[10];
+
 /* USER CODE END 0 */
 
 /**
@@ -94,16 +103,22 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+  BMP180_Start();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  motorSpinny();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  Temperature = BMP180_GetTemp();
+
+	  Pressure = BMP180_GetPress (0);
+
+	  Altitude = BMP180_GetAlt(0);
   }
   /* USER CODE END 3 */
 }
