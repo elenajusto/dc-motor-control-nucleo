@@ -65,7 +65,11 @@ void motorSpinny();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-char msg[30];
+uint8_t msg[30];
+
+static const uint8_t bmp180Address = 0x77 << 1; // LSH 1 as addr given as 7-bit
+
+HAL_StatusTypeDef ret;
 
 /* USER CODE END 0 */
 
@@ -101,6 +105,12 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+  // Start I2C comm with sensor
+
+
+  // Wait for ACK
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,13 +120,17 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (bmpBegin(BMP085_STANDARD, &hi2c1) == 1){
-		  sprintf(msg, "Success\n\r");
-		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+	  ret = HAL_I2C_Master_Transmit(&hi2c1, bmp180Address, msg, 1, HAL_MAX_DELAY);
+	  if (ret != HAL_OK){
+		  sprintf(msg, "Failed to connect :(\n\r");
 	  } else {
-		  sprintf(msg, "Fail\n\r");
-		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+		  sprintf(msg, "Success\n\r");
 	  }
+
+	  // Print out ACK
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
   }
   /* USER CODE END 3 */
 }
