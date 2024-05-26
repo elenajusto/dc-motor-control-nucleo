@@ -18,8 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
 #include "BMP180.h"
+#include "bmp085.h"
+
 #include "stdio.h"
+#include "string.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -61,13 +65,7 @@ void motorSpinny();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-float Temperature = 0;
-float Pressure = 0;
-float Altitude = 0;
-
-char Temperature1[10];
-char Pressure1[10];
-char Altitude1[10];
+char msg[30];
 
 /* USER CODE END 0 */
 
@@ -103,8 +101,6 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  BMP180_Start();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,11 +110,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  Temperature = BMP180_GetTemp();
-
-	  Pressure = BMP180_GetPress (0);
-
-	  Altitude = BMP180_GetAlt(0);
+	  if (bmpBegin(BMP085_STANDARD, &hi2c1) == 1){
+		  sprintf(msg, "Success\n\r");
+		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+	  } else {
+		  sprintf(msg, "Fail\n\r");
+		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+	  }
   }
   /* USER CODE END 3 */
 }

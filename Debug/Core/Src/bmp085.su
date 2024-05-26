@@ -1,0 +1,9 @@
+../Core/Src/bmp085.c:40:9:bmpRead8	40	static
+../Core/Src/bmp085.c:48:10:bmpRead16	40	static
+../Core/Src/bmp085.c:58:6:bmpWrite8	40	static
+../Core/Src/bmp085.c:66:9:bmpBegin	16	static
+../Core/Src/bmp085.c:97:9:computeB5	24	static
+../Core/Src/bmp085.c:104:10:readBMPRawTemperature	8	static
+../Core/Src/bmp085.c:111:10:readBMPRawPressure	16	static
+../Core/Src/bmp085.c:135:7:readBMPTemperature	24	static
+../Core/Src/bmp085.c:149:9:readBMPPressure	56	static
