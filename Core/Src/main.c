@@ -37,7 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+SPL06_007 pressureSensor;		/* Instance of sensor */
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -69,10 +69,6 @@ void i2cScanner();
 
 /* UART Variables */
 uint8_t msg[30];
-
-/* Air Pressure Sensor Variables */
-static const uint8_t sensorAddress = 0x76 << 1; // LSH 1 as addr given as 7-bit
-HAL_StatusTypeDef ret;
 
 /* I2C Scanner Variables */
 uint8_t Buffer[25] = {0};
@@ -115,23 +111,13 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // Run I2C scanner
-  i2cScanner();
+  // i2cScanner();
 
-  // Debug messages
-  sprintf(msg, "Trying to connect to: %d\n\r", sensorAddress);
+  // Initialise pressure sensor
+  uint8_t ret = SPL06_007_Initialise( &pressureSensor, &hi2c1 );
+
+  sprintf(msg, "Value Received: %d\r\n", ret);
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
-
-  // I2C communication attempt to sensor
-  ret = HAL_I2C_Master_Transmit(&hi2c1, sensorAddress, msg, 1, HAL_MAX_DELAY);
-  if (ret != HAL_OK){
-	  sprintf(msg, "Failed to connect :(\n\r");
-  } else {
-	  sprintf(msg, "Successfully received HAL_OK\n\r");
-  }
-
-  // Print out result
-  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
