@@ -60,16 +60,24 @@ static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 void motorSpinny();
+void i2cScanner();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/* UART Variables */
 uint8_t msg[30];
 
-static const uint8_t bmp180Address = 0x77 << 1; // LSH 1 as addr given as 7-bit
-
+/* Air Pressure Sensor Variables */
+static const uint8_t bmp180Address = 0x76 << 1; // LSH 1 as addr given as 7-bit
 HAL_StatusTypeDef ret;
+
+/* I2C Scanner Variables */
+uint8_t Buffer[25] = {0};
+uint8_t Space[] = " - ";
+uint8_t StartMSG[] = "Starting I2C Scanning: \r\n";
+uint8_t EndMSG[] = "Done! \r\n\r\n";
 
 /* USER CODE END 0 */
 
@@ -105,11 +113,20 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  // Start I2C comm with sensor
+  i2cScanner();
 
+  sprintf(msg, "Trying to connect to: %d\n\r", bmp180Address);
+  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
-  // Wait for ACK
+  ret = HAL_I2C_Master_Transmit(&hi2c1, bmp180Address, msg, 1, HAL_MAX_DELAY);
+  if (ret != HAL_OK){
+	  sprintf(msg, "Failed to connect :(\n\r");
+  } else {
+	  sprintf(msg, "Successfully received HAL_OK\n\r");
+  }
 
+  // Print out ACK
+  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 
@@ -120,16 +137,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  ret = HAL_I2C_Master_Transmit(&hi2c1, bmp180Address, msg, 1, HAL_MAX_DELAY);
-	  if (ret != HAL_OK){
-		  sprintf(msg, "Failed to connect :(\n\r");
-	  } else {
-		  sprintf(msg, "Success\n\r");
-	  }
-
-	  // Print out ACK
-	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
   }
   /* USER CODE END 3 */
@@ -335,6 +342,29 @@ void motorSpinny(){
 	HAL_GPIO_WritePin(MOTOR_IN1_GPIO_Port, MOTOR_IN1_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MOTOR_IN2_GPIO_Port, MOTOR_IN2_Pin, GPIO_PIN_SET);
 	HAL_Delay(2000);
+}
+
+// I2C Scanner
+void i2cScanner(){
+	uint8_t i = 0, ret;
+	/*-[ I2C Bus Scanning ]-*/
+	HAL_UART_Transmit(&huart2, StartMSG, sizeof(StartMSG), 10000);
+	for(i=1; i<128; i++)
+	{
+		ret = HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(i<<1), 3, 5);
+		if (ret != HAL_OK) /* No ACK Received At That Address */
+		{
+			HAL_UART_Transmit(&huart2, Space, sizeof(Space), 10000);
+		}
+		else if(ret == HAL_OK)
+		{
+			sprintf(Buffer, "0x%X", i);
+			HAL_UART_Transmit(&huart2, Buffer, sizeof(Buffer), 10000);
+		}
+	}
+	HAL_UART_Transmit(&huart2, EndMSG, sizeof(EndMSG), 10000);
+  /*--[ Scanning Done ]--*/
+
 }
 
 /* USER CODE END 4 */
