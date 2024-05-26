@@ -21,6 +21,7 @@
 
 #include "BMP180.h"
 #include "bmp085.h"
+#include "spl06-007.h"
 
 #include "stdio.h"
 #include "string.h"
@@ -70,7 +71,7 @@ void i2cScanner();
 uint8_t msg[30];
 
 /* Air Pressure Sensor Variables */
-static const uint8_t bmp180Address = 0x76 << 1; // LSH 1 as addr given as 7-bit
+static const uint8_t sensorAddress = 0x76 << 1; // LSH 1 as addr given as 7-bit
 HAL_StatusTypeDef ret;
 
 /* I2C Scanner Variables */
@@ -117,11 +118,11 @@ int main(void)
   i2cScanner();
 
   // Debug messages
-  sprintf(msg, "Trying to connect to: %d\n\r", bmp180Address);
+  sprintf(msg, "Trying to connect to: %d\n\r", sensorAddress);
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
   // I2C communication attempt to sensor
-  ret = HAL_I2C_Master_Transmit(&hi2c1, bmp180Address, msg, 1, HAL_MAX_DELAY);
+  ret = HAL_I2C_Master_Transmit(&hi2c1, sensorAddress, msg, 1, HAL_MAX_DELAY);
   if (ret != HAL_OK){
 	  sprintf(msg, "Failed to connect :(\n\r");
   } else {

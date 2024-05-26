@@ -1,0 +1,3 @@
+../Core/Src/spl06-007.c:14:9:SPL06_007_Initialise	2
+../Core/Src/spl06-007.c:49:19:SPL06_007_ReadRegister	1
+../Core/Src/spl06-007.c:55:19:SPL06_007_WriteRegister	1

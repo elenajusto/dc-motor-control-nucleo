@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  000200b0  2**0
                   CONTENTS, READONLY
- 13 .debug_info   0000df38  00000000  00000000  000200f3  2**0
+ 13 .debug_info   0000df3f  00000000  00000000  000200f3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00001fed  00000000  00000000  0002e02b  2**0
+ 14 .debug_abbrev 00001fed  00000000  00000000  0002e032  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000b58  00000000  00000000  00030018  2**3
+ 15 .debug_aranges 00000b58  00000000  00000000  00030020  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 000008db  00000000  00000000  00030b70  2**0
+ 16 .debug_rnglists 000008db  00000000  00000000  00030b78  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000022c5  00000000  00000000  0003144b  2**0
+ 17 .debug_macro  000022f0  00000000  00000000  00031453  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0000fbcc  00000000  00000000  00033710  2**0
+ 18 .debug_line   0000fbdb  00000000  00000000  00033743  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00099876  00000000  00000000  000432dc  2**0
+ 19 .debug_str    000998e5  00000000  00000000  0004331e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00002d20  00000000  00000000  000dcb54  2**2
+ 20 .debug_frame  00002d20  00000000  00000000  000dcc04  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000074  00000000  00000000  000df874  2**0
+ 21 .debug_line_str 00000074  00000000  00000000  000df924  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -800,10 +800,12 @@ int main(void)
  8000656:	f000 f897 	bl	8000788 <MX_I2C1_Init>
   /* USER CODE BEGIN 2 */
 
+  // Run I2C scanner
   i2cScanner();
  800065a:	f000 f9b7 	bl	80009cc <i2cScanner>
 
-  sprintf(msg, "Trying to connect to: %d\n\r", bmp180Address);
+  // Debug messages
+  sprintf(msg, "Trying to connect to: %d\n\r", sensorAddress);
  800065e:	23ec      	movs	r3, #236	; 0xec
  8000660:	001a      	movs	r2, r3
  8000662:	491e      	ldr	r1, [pc, #120]	; (80006dc <main+0x9c>)
@@ -822,7 +824,8 @@ int main(void)
  800067e:	4819      	ldr	r0, [pc, #100]	; (80006e4 <main+0xa4>)
  8000680:	f002 fb02 	bl	8002c88 <HAL_UART_Transmit>
 
-  ret = HAL_I2C_Master_Transmit(&hi2c1, bmp180Address, msg, 1, HAL_MAX_DELAY);
+  // I2C communication attempt to sensor
+  ret = HAL_I2C_Master_Transmit(&hi2c1, sensorAddress, msg, 1, HAL_MAX_DELAY);
  8000684:	23ec      	movs	r3, #236	; 0xec
  8000686:	b299      	uxth	r1, r3
  8000688:	4a15      	ldr	r2, [pc, #84]	; (80006e0 <main+0xa0>)
@@ -857,7 +860,7 @@ int main(void)
  80006be:	f003 f993 	bl	80039e8 <siprintf>
   }
 
-  // Print out ACK
+  // Print out result
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
  80006c2:	4b07      	ldr	r3, [pc, #28]	; (80006e0 <main+0xa0>)
  80006c4:	0018      	movs	r0, r3

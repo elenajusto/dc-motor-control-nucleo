@@ -1,6 +1,7 @@
 "./Core/Src/BMP180.o"
 "./Core/Src/bmp085.o"
 "./Core/Src/main.o"
+"./Core/Src/spl06-007.o"
 "./Core/Src/stm32g0xx_hal_msp.o"
 "./Core/Src/stm32g0xx_it.o"
 "./Core/Src/syscalls.o"
