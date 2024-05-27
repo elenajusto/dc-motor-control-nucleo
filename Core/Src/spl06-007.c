@@ -22,6 +22,8 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 
 	dev->compensatedTemperature = 0.0f;
 
+	dev->scaleFactor = 2088960;
+
 	/* Store number of transaction errors (to be returned at end of function */
 	uint8_t errNum = 0;
 	HAL_StatusTypeDef status;
@@ -64,7 +66,7 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 	errNum += ( status != HAL_OK );	/* Increment error count if error countered */
 
 	/* Return number of errors */
-	return errNum;					// 0 means successful setup
+	return errNum;					/* 0 means successful setup */
 }
 
 /*
