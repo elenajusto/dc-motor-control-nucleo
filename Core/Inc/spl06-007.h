@@ -100,7 +100,6 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle );
 /*
  * DATA ACQUISITION
  */
-uint8_t SPL06_007_checkMode( SPL06_007 *dev );
 uint8_t SPL06_007_calcCompPressure( SPL06_007 *dev );
 uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev );
 uint8_t SPL06_007_getRawPressure( SPL06_007 *dev );
@@ -110,6 +109,7 @@ uint8_t SPL06_007_getRawTemp( SPL06_007 *dev );
 /*
  * LOW-LEVEL FUNCTIONS
  */
+uint8_t SPL06_007_getRegisterValue( SPL06_007 *dev, uint8_t reg );
 HAL_StatusTypeDef SPL06_007_ReadRegister( SPL06_007 *dev, uint8_t reg, uint8_t *data );
 HAL_StatusTypeDef SPL06_007_WriteRegister( SPL06_007 *dev, uint8_t reg, uint8_t *data );
 

@@ -126,24 +126,25 @@ int main(void)
 	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
   }
 
-  /* Check Sensor Mode */
-  uint8_t sensorMode = SPL06_007_checkMode(&pressureSensor);
-  sprintf(msg, "Sensor Mode: 0x%02X\r\n", sensorMode);
+  /* Check Sensor Operating Mode and Status (MEAS_CFG) Register */
+  uint8_t MEAS_CFG = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_MEAS_CFG_ADDR);
+  sprintf(msg, "MEAS_CFG: 0x%02X\r\n", MEAS_CFG);
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
-  /* Set to continous reading */
+  /* Check Pressure Configuration (PRS_CFG) Register */
+  uint8_t PRS_CFG = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_PRS_CFG_ADDR);
+  sprintf(msg, "PRS_CFG: 0x%02X\r\n", PRS_CFG);
+  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
-  	  // Set config register to Background Mode - Continuous pressure and temperature measurement (111)
+  /* Check Temperature Configuration (TMP_CFG) Register */
+  uint8_t TMP_CFG = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_CFG_ADDR);
+  sprintf(msg, "TMP_CFG: 0x%02X\r\n", TMP_CFG);
+  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
-  	  // Read pressure measurement register
-
-  	  // Save to integer
-
-  	  // Read temperature measurement register
-
-  	  // Save to integer
-
-  	  // Print intgers to USART
+  /* Check Interrupt and FIFO configuration (CFG_REG) Register */
+  uint8_t CFG_REG = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_CFG_REG_ADDR);
+  sprintf(msg, "CFG_REG: 0x%02X\r\n", CFG_REG);
+  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
   /* Set MEAS_CTRL to Command Mode - Temperature Measurement */
   /*
