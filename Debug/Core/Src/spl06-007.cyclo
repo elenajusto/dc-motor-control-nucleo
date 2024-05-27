@@ -1,4 +1,8 @@
 ../Core/Src/spl06-007.c:16:9:SPL06_007_Initialise	2
-../Core/Src/spl06-007.c:56:9:SPL06_007_checkMode	1
-../Core/Src/spl06-007.c:71:19:SPL06_007_ReadRegister	1
-../Core/Src/spl06-007.c:77:19:SPL06_007_WriteRegister	1
+../Core/Src/spl06-007.c:73:9:SPL06_007_checkMode	1
+../Core/Src/spl06-007.c:83:9:SPL06_007_calcCompPressure	1
+../Core/Src/spl06-007.c:87:9:SPL06_007_calcCompTemp	1
+../Core/Src/spl06-007.c:91:9:SPL06_007_getRawPressure	1
+../Core/Src/spl06-007.c:95:9:SPL06_007_getRawTemp	1
+../Core/Src/spl06-007.c:102:19:SPL06_007_ReadRegister	1
+../Core/Src/spl06-007.c:108:19:SPL06_007_WriteRegister	1
