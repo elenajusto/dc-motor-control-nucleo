@@ -110,14 +110,47 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  // Run I2C scanner
+  /* Run I2C scanner */
   // i2cScanner();
 
-  // Initialise pressure sensor
+  /* Initialise pressure sensor */
   uint8_t ret = SPL06_007_Initialise( &pressureSensor, &hi2c1 );
+  if (ret == 0){
+	  // Success
+	  sprintf(msg, "Successfully Connected to SPL006. \r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+  } else {
+	  // Errors
+	  sprintf(msg, "Number of errors: %d\r\n", ret);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+  }
 
-  sprintf(msg, "Value Received: %d\r\n", ret);
+  /* Check Sensor Mode */
+  uint8_t sensorMode = SPL06_007_checkMode(&pressureSensor);
+  sprintf(msg, "Sensor Mode: 0x%02x\r\n", sensorMode);
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+
+  /* Set MEAS_CTRL to Command Mode - Temperature Measurement */
+  /*
+  uint8_t newRegValue = 0xC1;
+  HAL_StatusTypeDef status = SPL06_007_WriteRegister(&pressureSensor, SPL06_REG_MEAS_CFG_ADDR, &newRegValue);
+  if (status == HAL_OK)
+  {
+	  sprintf(msg, "Successfully wrote 0x%02X to register 0x%02x\r\n", newRegValue, SPL06_REG_MEAS_CFG_ADDR);
+  }
+  else
+  {
+	  sprintf(msg, "Failed to write to register 0x%02x: %d\r\n", SPL06_REG_MEAS_CFG_ADDR, status);
+  }
+  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+  */
+
+  /* Check Sensor Mode again */
+  sensorMode = SPL06_007_checkMode(&pressureSensor);
+  sprintf(msg, "Sensor Mode after write: 0x%02X\r\n", sensorMode);
+  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

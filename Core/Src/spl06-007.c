@@ -1,6 +1,8 @@
 /*
  * spl06-007.c
  *
+ *	SPL06-007 Air Pressure Sensor I2C Driver
+ *
  *  Created on: May 26, 2024
  *      Author: elena
  */
@@ -41,6 +43,17 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 /*
  * DATA ACQUISITION
  */
+uint8_t SPL06_007_checkMode( SPL06_007 *dev ){
+
+	/* Access Sensor Operating Mode and Status (MEAS_CFG) Register (0x08) */
+	HAL_StatusTypeDef status;
+	uint8_t regData;
+	status = SPL06_007_ReadRegister( dev, SPL06_REG_MEAS_CFG_ADDR, &regData);
+
+	/* Return value */
+	return regData;
+}
+
 HAL_StatusTypeDef SPL06_007_ReadPressure( SPL06_007 *dev );
 
 /*
