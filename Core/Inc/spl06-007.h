@@ -88,7 +88,7 @@ typedef struct {
 	float compensatedTemperature;
 
 	/* Scale Factor */
-	uint8_t scaleFactor;
+	uint16_t scaleFactor;
 
 } SPL06_007;
 
