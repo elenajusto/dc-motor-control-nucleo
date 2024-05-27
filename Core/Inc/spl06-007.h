@@ -82,7 +82,10 @@ typedef struct {
 	I2C_HandleTypeDef *i2cHandle;
 
 	/* Pressure Data */
-	float pressure;
+	float compensatedPressure;
+
+	/* Temperature Data */
+	float compensatedTemperature;
 
 } SPL06_007;
 

@@ -18,7 +18,9 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 	/* Set struct parameters */
 	dev->i2cHandle = i2cHandle;
 
-	dev->pressure = 0.0f;
+	dev->compensatedPressure = 0.0f;
+
+	dev->compensatedTemperature = 0.0f;
 
 	/* Store number of transaction errors (to be returned at end of function */
 	uint8_t errNum = 0;

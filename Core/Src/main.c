@@ -62,13 +62,14 @@ static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 void motorSpinny();
 void i2cScanner();
+void printBits(uint8_t value);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
 /* UART Variables */
-uint8_t msg[30];
+uint8_t msg[40];
 
 /* I2C Scanner Variables */
 uint8_t Buffer[25] = {0};
@@ -127,9 +128,22 @@ int main(void)
 
   /* Check Sensor Mode */
   uint8_t sensorMode = SPL06_007_checkMode(&pressureSensor);
-  sprintf(msg, "Sensor Mode: 0x%02x\r\n", sensorMode);
+  sprintf(msg, "Sensor Mode: 0x%02X\r\n", sensorMode);
   HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
+  /* Set to continous reading */
+
+  	  // Set config register to Background Mode - Continuous pressure and temperature measurement (111)
+
+  	  // Read pressure measurement register
+
+  	  // Save to integer
+
+  	  // Read temperature measurement register
+
+  	  // Save to integer
+
+  	  // Print intgers to USART
 
   /* Set MEAS_CTRL to Command Mode - Temperature Measurement */
   /*
@@ -145,11 +159,6 @@ int main(void)
   }
   HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
   */
-
-  /* Check Sensor Mode again */
-  sensorMode = SPL06_007_checkMode(&pressureSensor);
-  sprintf(msg, "Sensor Mode after write: 0x%02X\r\n", sensorMode);
-  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 
@@ -370,7 +379,6 @@ void motorSpinny(){
 // I2C Scanner
 void i2cScanner(){
 	uint8_t i = 0, ret;
-	/*-[ I2C Bus Scanning ]-*/
 	HAL_UART_Transmit(&huart2, StartMSG, sizeof(StartMSG), 10000);
 	for(i=1; i<128; i++)
 	{
@@ -386,8 +394,16 @@ void i2cScanner(){
 		}
 	}
 	HAL_UART_Transmit(&huart2, EndMSG, sizeof(EndMSG), 10000);
-  /*--[ Scanning Done ]--*/
+}
 
+// Read each bit in a register
+void printBits(uint8_t value){
+	for (int i = 7; i >= 0; i--) // Iterate from bit 7 to bit 0
+	{
+		uint8_t bit = (value >> i) & 0x01; // Shift the bit to the rightmost position and mask with 0x01
+		sprintf(msg, "Bit %d: %d\r\n", i, bit);
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+	}
 }
 
 /* USER CODE END 4 */
