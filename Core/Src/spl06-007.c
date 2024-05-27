@@ -39,21 +39,21 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 
 	/* Set Sensor Operating Mode and Status (MEAS_CFG) */
 	/* Hard coded to: 111 - Continuous pressure and temperature measurement */
-	uint8_t setRegValueMEAS;
+	uint8_t setRegValueMEAS = 0xC7;
 	status = SPL06_007_WriteRegister(dev, SPL06_REG_MEAS_CFG_ADDR, &setRegValueMEAS);
 	errNum += ( status != HAL_OK );	/* Increment error count if error countered */
 
 	/* Set Pressure Configuration (PRS_CFG) measurement rate and over sampling rate */
 	/* Hard coded to: PM_RATE[2:0] = 111 - 128 measurements pr. sec.
 					  PM_PRC[3:0] = 0110 *) - 64 times (High Precision) */
-	uint8_t setRegValuePRS;
+	uint8_t setRegValuePRS = 0x77;
 	status = SPL06_007_WriteRegister(dev, SPL06_REG_PRS_CFG_ADDR, &setRegValueMEAS);
 	errNum += ( status != HAL_OK );	/* Increment error count if error countered */
 
 	/* Set Temperature Configuration (TMP_CFG) measurement rate and over sampling rate */
 	/* Hard coded to: TMP_RATE[2:0] = 111 - 128 measurements pr. sec.
 					  TMP_PRC[2:0] = 111 - 128 times. */
-	uint8_t setRegValueTMP;
+	uint8_t setRegValueTMP = 0xF7;
 	status = SPL06_007_WriteRegister(dev, SPL06_REG_TMP_CFG_ADDR, &setRegValueMEAS);
 	errNum += ( status != HAL_OK );	/* Increment error count if error countered */
 
@@ -61,7 +61,7 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 	/* Set Interrupt and FIFO configuration (CFG_REG) */
 	/* Hard coded to: T_SHIFT = Must be set to '1' when the oversampling rate is >8 times.
 					  P_SHIFT = Must be set to '1' when the oversampling rate is >8 times. */
-	uint8_t setRegValueCFG;
+	uint8_t setRegValueCFG = 0xC;
 	status = SPL06_007_WriteRegister(dev, SPL06_REG_CFG_REG_ADDR, &setRegValueMEAS);
 	errNum += ( status != HAL_OK );	/* Increment error count if error countered */
 
