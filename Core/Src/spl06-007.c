@@ -28,15 +28,23 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 
 	/* Check device Product and Revision ID (DATASHEET PAGE 27) */
 	uint8_t regData;
-
 	status = SPL06_007_ReadRegister( dev, SPL06007_I2C_ID_ADDR, &regData);
+
 	errNum += ( status != HAL_OK );
 
 	if ( regData != SPL06007_I2C_REV_ID){
 		return 255;
 	}
 
-	/* Configure sensor settings*/
+	/* Configure Sensor Operating Mode and Status Register */
+
+
+	/* Set Pressure Configuration measurement rate and over sampling rate */
+
+
+	/* Set Temperature Configuration measurement rate and over sampling rate */
+
+
 
 	/* Return number of errors */
 	return errNum;					// 0 means successful setup
@@ -48,9 +56,8 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle ){
 uint8_t SPL06_007_checkMode( SPL06_007 *dev ){
 
 	/* Access Sensor Operating Mode and Status (MEAS_CFG) Register (0x08) */
-	HAL_StatusTypeDef status;
 	uint8_t regData;
-	status = SPL06_007_ReadRegister( dev, SPL06_REG_MEAS_CFG_ADDR, &regData);
+	SPL06_007_ReadRegister( dev, SPL06_REG_MEAS_CFG_ADDR, &regData);
 
 	/* Return value */
 	return regData;

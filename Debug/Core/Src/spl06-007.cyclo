@@ -1,4 +1,4 @@
 ../Core/Src/spl06-007.c:16:9:SPL06_007_Initialise	2
-../Core/Src/spl06-007.c:48:9:SPL06_007_checkMode	1
-../Core/Src/spl06-007.c:64:19:SPL06_007_ReadRegister	1
-../Core/Src/spl06-007.c:70:19:SPL06_007_WriteRegister	1
+../Core/Src/spl06-007.c:56:9:SPL06_007_checkMode	1
+../Core/Src/spl06-007.c:71:19:SPL06_007_ReadRegister	1
+../Core/Src/spl06-007.c:77:19:SPL06_007_WriteRegister	1
